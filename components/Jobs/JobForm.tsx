@@ -160,8 +160,8 @@ export function JobForm() {
                   leftSection={<IconCalendar size={18} stroke={1.5} />}
                 />
               )}
+            />
           </Group>
-
           {/* Job Description */}
           <Textarea
             label="Job Description"
