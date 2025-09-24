@@ -122,28 +122,44 @@ export function JobForm() {
               required
             />
           </Group>
+          <Group grow align="end">
+            <Box w="100%">
+              <label style={{ fontSize: 14, fontWeight: 500, marginBottom: 4, display: 'block' }}>Salary Range</label>
+              <Group grow>
+                <Controller
+                  name="salaryMin"
+                  control={control}
+                  render={({ field }) => (
+                    <NumberInput
+                      placeholder="₹0" {...field} min={0} step={10000}
+                    />
+                  )}
+                />
+                <Controller
+                  name="salaryMax"
+                  control={control}
+                  render={({ field }) => (
+                    <NumberInput
+                      placeholder="₹12,00,000" {...field} min={0} step={10000}
+                    />
+                  )}
+                />
+              </Group>
+            </Box>
 
-          {/* Salary Range */}
-          <Group grow >
-            <NumberInput
-              label="Salary Range (Min)"
-              placeholder="₹0"
-              {...register('salaryMin', { valueAsNumber: true })}
-              error={errors.salaryRange?.message}
-              min={0}
-              step={10000}
-              required
-            />
-            <NumberInput
-              label="Salary Range (Max)"
-              placeholder="₹12,00,000"
-              {...register('salaryMax', { valueAsNumber: true })}
-              error={errors.salaryRange?.message}
-              min={0}
-              step={10000}
-              required
-            />
-            <Controller name="applicationDeadline" control={control} render={({ field }) => ( <DateInput label="Application Deadline" placeholder="Pick a date" value={field.value ? new Date(field.value) : null} onChange={(val) => field.onChange(val)} error={errors.applicationDeadline?.message} leftSection={<IconCalendar size={18} stroke={1.5} />} /> )} />
+            <Controller
+              name="applicationDeadline"
+              control={control}
+              render={({ field }) => (
+                <DateInput
+                  label="Application Deadline"
+                  placeholder="Pick a date"
+                  value={field.value ? new Date(field.value) : null}
+                  onChange={(val) => field.onChange(val)}
+                  error={errors.applicationDeadline?.message}
+                  leftSection={<IconCalendar size={18} stroke={1.5} />}
+                />
+              )}
           </Group>
 
           {/* Job Description */}
