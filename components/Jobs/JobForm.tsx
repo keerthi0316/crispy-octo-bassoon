@@ -162,7 +162,6 @@ export function JobForm() {
               )}
             />
           </Group>
-
           {/* Job Description */}
           <Textarea
             label="Job Description"
