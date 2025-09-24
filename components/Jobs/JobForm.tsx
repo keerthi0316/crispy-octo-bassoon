@@ -160,31 +160,7 @@ export function JobForm() {
                   leftSection={<IconCalendar size={18} stroke={1.5} />}
                 />
               )}
-            />
           </Group>
-
-          {/* Salary Range */}
-          {/* <Group grow align="end">
-            <NumberInput
-              label="Salary Range (Min)"
-              placeholder="₹0"
-              {...register('salaryMin', { valueAsNumber: true })}
-              error={errors.salaryRange?.message}
-              min={0}
-              step={10000}
-              required
-            />
-            <NumberInput
-              label="Salary Range (Max)"
-              placeholder="₹12,00,000"
-              {...register('salaryMax', { valueAsNumber: true })}
-              error={errors.salaryRange?.message}
-              min={0}
-              step={10000}
-              required
-            />
-            <Controller name="applicationDeadline" control={control} render={({ field }) => ( <DateInput label="Application Deadline" placeholder="Pick a date" value={field.value ? new Date(field.value) : null} onChange={(val) => field.onChange(val)} error={errors.applicationDeadline?.message} leftSection={<IconCalendar size={18} stroke={1.5} />} /> )} />
-          </Group> */}
 
           {/* Job Description */}
           <Textarea
