@@ -2,50 +2,64 @@
 
 import { useState } from 'react'
 import {
-  Paper, TextInput, Textarea, Select,
-  Button, Group, Stack, Title, Box, NumberInput
+  Paper,
+  TextInput,
+  Textarea,
+  Select,
+  Button,
+  Group,
+  Stack,
+  Title,
+  Box,
+  NumberInput
 } from '@mantine/core'
 import { DateInput } from '@mantine/dates'
-import { IconCalendar } from '@tabler/icons-react'
-import { useForm, Controller } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { jobSchema, JobFormData } from '@/lib/validations'
 import { notifications } from '@mantine/notifications'
 import { useRouter } from 'next/navigation'
+import { IconCalendar } from '@tabler/icons-react'
 
 const jobTypes = [
   { value: 'Full-time', label: 'Full-time' },
   { value: 'Part-time', label: 'Part-time' },
   { value: 'Contract', label: 'Contract' },
-  { value: 'Internship', label: 'Internship' },
+  { value: 'Internship', label: 'Internship' }
 ]
 
 export function JobForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter()
 
-  const { register, handleSubmit, control, watch, setValue, formState: { errors }, reset } =
-    useForm<JobFormData>({ resolver: zodResolver(jobSchema) })
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    control,
+    formState: { errors },
+    reset
+  } = useForm<JobFormData>({
+    resolver: zodResolver(jobSchema)
+  })
 
   const onSubmit = async (data: JobFormData) => {
     setIsSubmitting(true)
 
     try {
-      // combine min/max into a single string for API
-      const payload = {
-        ...data,
-        salaryRange: `₹${data.salaryMin} - ₹${data.salaryMax}`,
-        applicationDeadline: data.applicationDeadline.toISOString(),
-      }
-
       const response = await fetch('/api/jobs', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(data),
       })
 
       if (response.ok) {
-        notifications.show({ title: 'Success', message: 'Job created', color: 'green' })
+        notifications.show({
+          title: 'Success',
+          message: 'Job created successfully',
+          color: 'green',
+        })
         reset()
         router.push('/jobs')
       } else {
@@ -65,81 +79,97 @@ export function JobForm() {
 
   return (
     <Paper p="xl" radius="md" maw={700} mx="auto">
-      <Title order={3} ta="center" mb="xl">Create Job Opening</Title>
+      <Title order={3} ta="center" mb="xl">
+        Create Job Opening
+      </Title>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack gap="md">
+          {/* Top Row - Job Title & Company */}
           <Group grow>
-            <TextInput label="Job Title" placeholder="Full Stack Developer"
-              {...register('title')} error={errors.title?.message} />
-            <TextInput label="Company Name" placeholder="Amazon"
-              {...register('companyName')} error={errors.companyName?.message} />
-          </Group>
-
-          <Group grow>
-            <TextInput label="Location" placeholder="Chennai"
-              {...register('location')} error={errors.location?.message} />
-            <Select label="Job Type" placeholder="Select" data={jobTypes}
-              value={watch('jobType')} onChange={v => setValue('jobType', v as any)}
-              error={errors.jobType?.message} />
-          </Group>
-
-          <Group grow align="end">
-            <Box w="100%">
-              <label style={{ fontSize: 14, fontWeight: 500, marginBottom: 4, display: 'block' }}>Salary Range</label>
-              <Group grow>
-                <Controller
-                  name="salaryMin"
-                  control={control}
-                  render={({ field }) => (
-                    <NumberInput
-                      placeholder="₹0" {...field} min={0} step={10000}
-                    />
-                  )}
-                />
-                <Controller
-                  name="salaryMax"
-                  control={control}
-                  render={({ field }) => (
-                    <NumberInput
-                      placeholder="₹12,00,000" {...field} min={0} step={10000}
-                    />
-                  )}
-                />
-              </Group>
-            </Box>
-
-            <Controller
-              name="applicationDeadline"
-              control={control}
-              render={({ field }) => (
-                <DateInput
-                  label="Application Deadline"
-                  placeholder="Pick a date"
-                  value={field.value ? new Date(field.value) : null}
-                  onChange={(val) => field.onChange(val)}
-                  error={errors.applicationDeadline?.message}
-                  leftSection={<IconCalendar size={18} stroke={1.5} />}
-                />
-              )}
+            <TextInput
+              label="Job Title"
+              placeholder="Full Stack Developer"
+              {...register('title')}
+              error={errors.title?.message}
+              required
+            />
+            <TextInput
+              label="Company Name"
+              placeholder="Amazon"
+              {...register('companyName')}
+              error={errors.companyName?.message}
+              required
             />
           </Group>
 
-          <Textarea
-            label="Job Description" placeholder="Job description..."
-            {...register('description')} error={errors.description?.message} />
-          <Textarea
-            label="Requirements" placeholder="Requirements..."
-            {...register('requirements')} error={errors.requirements?.message} />
-          <Textarea
-            label="Responsibilities" placeholder="Responsibilities..."
-            {...register('responsibilities')} error={errors.responsibilities?.message} />
+          {/* Second Row - Location & Job Type */}
+          <Group grow>
+            <TextInput
+              label="Location"
+              placeholder="Chennai"
+              {...register('location')}
+              error={errors.location?.message}
+              required
+            />
+            <Select
+              label="Job Type"
+              placeholder="Select"
+              data={jobTypes}
+              value={watch('jobType')}
+              onChange={(value) => setValue('jobType', value as any)}
+              error={errors.jobType?.message}
+              required
+            />
+          </Group>
 
+          {/* Salary Range */}
+          <Group grow >
+            <NumberInput
+              label="Salary Range (Min)"
+              placeholder="₹0"
+              {...register('salaryMin', { valueAsNumber: true })}
+              error={errors.salaryRange?.message}
+              min={0}
+              step={10000}
+              required
+            />
+            <NumberInput
+              label="Salary Range (Max)"
+              placeholder="₹12,00,000"
+              {...register('salaryMax', { valueAsNumber: true })}
+              error={errors.salaryRange?.message}
+              min={0}
+              step={10000}
+              required
+            />
+            <Controller name="applicationDeadline" control={control} render={({ field }) => ( <DateInput label="Application Deadline" placeholder="Pick a date" value={field.value ? new Date(field.value) : null} onChange={(val) => field.onChange(val)} error={errors.applicationDeadline?.message} leftSection={<IconCalendar size={18} stroke={1.5} />} /> )} />
+          </Group>
+
+          {/* Job Description */}
+          <Textarea
+            label="Job Description"
+            placeholder="Please share a description to let the candidate know what to expect..."
+            rows={4}
+            {...register('description')}
+            error={errors.description?.message}
+            required
+          />
+
+          {/* Actions */}
           <Group justify="space-between" mt="lg">
-            <Button variant="outline" color="black" type="button" onClick={() => reset()} disabled={isSubmitting}>
-              Save Draft
+            <Button
+              variant="outline"
+              color='black'
+              type="button"
+              onClick={() => reset()}
+              disabled={isSubmitting}
+            >
+              Save Draft  
             </Button>
-            <Button type="submit" loading={isSubmitting}>  »</Button>
+            <Button type="submit" loading={isSubmitting}>
+              Publish »
+            </Button>
           </Group>
         </Stack>
       </form>

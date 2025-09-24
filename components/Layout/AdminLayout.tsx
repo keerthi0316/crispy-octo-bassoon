@@ -97,9 +97,11 @@ export function AdminLayout({ children }: AdminLayoutProps) {
       <Modal
         opened={open}
         onClose={() => setOpen(false)}
-        title="Create Job Opening"
+        // title="Create Job Opening"
         centered
         size="lg"
+        withCloseButton={false}
+
       >
         <JobForm />
       </Modal>
