@@ -13,6 +13,7 @@ import {
   ThemeIcon
 } from '@mantine/core'
 import { IconCalendar, IconMapPin, IconBuildings, IconClock, IconBriefcase, IconCurrencyRupee, IconCircleCheck, IconUserPlus, IconStack2 } from '@tabler/icons-react'
+import { useState, useEffect } from 'react'
 
 interface JobCardProps {
   job: Job
@@ -21,6 +22,15 @@ interface JobCardProps {
   onDelete?: (id: string) => void
 }
 
+export function AlwaysVisibleButton(props) {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => setMounted(true), [])
+
+  if (!mounted) return null
+
+  return <Button {...props} />
+}
 export function JobCard({ job, onApply }: JobCardProps) {
   const formatTimeAgo = (dateString: string) => {
     const diff = Date.now() - new Date(dateString).getTime()
@@ -80,14 +90,29 @@ export function JobCard({ job, onApply }: JobCardProps) {
       </List>
 
       {/* Apply Button */}
-      <Button
+      {/* <Button
         fullWidth
         radius="md"
-        color="blue"
-        onClick={() => onApply(job.id)}
+        style={{opacity: 1}}
+         className="opacity-100 !transition-none"
       >
         Apply Now
-      </Button>
+      </Button> */}
+      <AlwaysVisibleButton
+  styles={{
+    root: {
+      opacity: 1,
+      transition: 'none',
+      backgroundColor: '#00AAFF', // your primary bg
+      color: '#fff',
+    },
+  }}
+
+        onClick={() => onApply(job.id)}
+>
+  Apply Now
+</AlwaysVisibleButton>
+
     </Card>
   )
 }

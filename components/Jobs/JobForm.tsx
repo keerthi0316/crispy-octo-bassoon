@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Paper,
   TextInput,
@@ -28,6 +28,15 @@ const jobTypes = [
   { value: 'Internship', label: 'Internship' }
 ]
 
+export function AlwaysVisibleButton(props) {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => setMounted(true), [])
+
+  if (!mounted) return null
+
+  return <Button {...props} />
+}
 export function JobForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter()
@@ -162,6 +171,7 @@ export function JobForm() {
               )}
             />
           </Group>
+
           {/* Job Description */}
           <Textarea
             label="Job Description"
@@ -183,9 +193,22 @@ export function JobForm() {
             >
               Save Draft  
             </Button>
-            <Button type="submit" loading={isSubmitting}>
+            {/* <Button  className='bg-blue text-primary-foreground'>
               Publish »
-            </Button>
+            </Button> */}
+                  <AlwaysVisibleButton type="submit" loading={isSubmitting}
+              styles={{
+                root: {
+                  opacity: 1,
+                  transition: 'none',
+                  backgroundColor: '#00AAFF', // your primary bg
+                  color: '#fff',
+                },
+              }}
+            
+            >
+              Publish »
+            </AlwaysVisibleButton>
           </Group>
         </Stack>
       </form>
