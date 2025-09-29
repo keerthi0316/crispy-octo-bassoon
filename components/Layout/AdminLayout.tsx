@@ -18,7 +18,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   return (
     <AppShell
       header={{ height: 100 }}
-      padding="md"
+      padding={0}
       styles={{
         main: {
           backgroundColor: '#f8f9fa',
@@ -27,14 +27,16 @@ export function AdminLayout({ children }: AdminLayoutProps) {
       }}
     >
       <AppShell.Header
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          background: 'transparent',
-          boxShadow: 'none',
-        }}
-      >
+  withBorder={false}   // 👈 disables the default Mantine border
+  style={{
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    background: 'transparent',
+    boxShadow: 'none',
+  }}
+>
+
         <Container size="lg" style={{ display: 'flex', justifyContent: 'center' }}>
           {/* Floating Navbar Box */}
           <Paper
