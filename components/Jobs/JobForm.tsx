@@ -19,7 +19,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { jobSchema, JobFormData } from '@/lib/validations'
 import { notifications } from '@mantine/notifications'
 import { useRouter } from 'next/navigation'
-import { IconCalendar } from '@tabler/icons-react'
+import { IconChevronsDown, IconCalendar, IconChevronDown, IconArrowsUpDown } from '@tabler/icons-react'
 
 const jobTypes = [
   { value: 'Full-time', label: 'Full-time' },
@@ -28,15 +28,45 @@ const jobTypes = [
   { value: 'Internship', label: 'Internship' }
 ]
 
-export function AlwaysVisibleButton(props) {
+export function AlwaysVisibleButton({ children, ...props }) {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => setMounted(true), [])
 
-  if (!mounted) return null
+  if (!mounted) {
+    return (
+      <Button
+        type="submit"
+        styles={{
+          root: {
+            opacity: 0,
+            pointerEvents: 'none', // avoid clicks on SSR
+          },
+        }}
+        {...props}
+      >
+        {children}
+      </Button>
+    )
+  }
 
-  return <Button {...props} />
+    // Render the real button after hydration
+  return (
+    <Button type="submit" {...props}>
+      {children}
+    </Button>
+  )
 }
+
+// export function AlwaysVisibleButton({ children, ...props }) {
+//   const [mounted, setMounted] = useState(false)
+//   useEffect(() => setMounted(true), [])
+
+//   if (!mounted) return null
+
+//   return <Button type="submit" {...props}>{children}</Button>
+// }
+
 export function JobForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter()
@@ -54,6 +84,7 @@ export function JobForm() {
   })
 
   const onSubmit = async (data: JobFormData) => {
+    console.log(data)
     setIsSubmitting(true)
 
     try {
@@ -69,6 +100,10 @@ export function JobForm() {
           message: 'Job created successfully',
           color: 'green',
         })
+        // reset({
+        //   ...data,
+        //   applicationDeadline: data.applicationDeadline ? new Date(data.applicationDeadline) : null,
+        // })
         reset()
         router.push('/jobs')
       } else {
@@ -101,34 +136,42 @@ export function JobForm() {
               placeholder="Full Stack Developer"
               {...register('title')}
               error={errors.title?.message}
-              required
+              
             />
             <TextInput
               label="Company Name"
-              placeholder="Amazon"
+              placeholder="Amazon, Microsoft, Swiggy"
               {...register('companyName')}
               error={errors.companyName?.message}
-              required
+              
             />
           </Group>
 
           {/* Second Row - Location & Job Type */}
           <Group grow>
-            <TextInput
-              label="Location"
-              placeholder="Chennai"
-              {...register('location')}
-              error={errors.location?.message}
-              required
-            />
+<Select
+  label="Location"
+  placeholder="Choose Preferred Location"
+  data={[
+    { value: 'Chennai', label: 'Chennai' },
+    { value: 'Bangalore', label: 'Bangalore' },
+    { value: 'Delhi', label: 'Delhi' },
+    { value: 'Remote', label: 'Remote' },
+  ]}
+  value={watch('location')}
+  onChange={(value) => setValue('location', value || '')}
+  error={errors.location?.message}
+  rightSection={<IconChevronDown size={16} stroke={1.5} />}
+/>
+
             <Select
               label="Job Type"
-              placeholder="Select"
+              placeholder="FullTime"
               data={jobTypes}
               value={watch('jobType')}
               onChange={(value) => setValue('jobType', value as any)}
               error={errors.jobType?.message}
-              required
+              rightSection={<IconChevronDown size={16} stroke={1.5}/>}
             />
           </Group>
           <Group grow align="end">
@@ -140,7 +183,9 @@ export function JobForm() {
                   control={control}
                   render={({ field }) => (
                     <NumberInput
-                      placeholder="₹0" {...field} min={0} step={10000}
+                    hideControls  
+                    placeholder="₹0" {...field} min={0} step={10000}
+                    leftSection={<IconArrowsUpDown size={16} stroke={1.5} />}
                     />
                   )}
                 />
@@ -149,7 +194,9 @@ export function JobForm() {
                   control={control}
                   render={({ field }) => (
                     <NumberInput
+                      hideControls
                       placeholder="₹12,00,000" {...field} min={0} step={10000}
+                    leftSection={<IconArrowsUpDown size={16} stroke={1.5} />}
                     />
                   )}
                 />
@@ -162,11 +209,11 @@ export function JobForm() {
               render={({ field }) => (
                 <DateInput
                   label="Application Deadline"
-                  placeholder="Pick a date"
+                  placeholder=""
                   value={field.value ? new Date(field.value) : null}
                   onChange={(val) => field.onChange(val)}
                   error={errors.applicationDeadline?.message}
-                  leftSection={<IconCalendar size={18} stroke={1.5} />}
+                  rightSection={<IconCalendar size={18} stroke={1.5} />}
                 />
               )}
             />
@@ -175,11 +222,11 @@ export function JobForm() {
           {/* Job Description */}
           <Textarea
             label="Job Description"
-            placeholder="Please share a description to let the candidate know what to expect..."
+            placeholder="Please share a description to let the candidate know more about the job role"
             rows={4}
             {...register('description')}
             error={errors.description?.message}
-            required
+            
           />
 
           {/* Actions */}
@@ -190,13 +237,17 @@ export function JobForm() {
               type="button"
               onClick={() => reset()}
               disabled={isSubmitting}
+               rightSection={
+    <div style={{ display: "flex", flexDirection: "column", lineHeight: 0 }}>
+      <IconChevronsDown size={12} stroke={2} />
+    </div>}
             >
               Save Draft  
             </Button>
             {/* <Button  className='bg-blue text-primary-foreground'>
               Publish »
             </Button> */}
-                  <AlwaysVisibleButton type="submit" loading={isSubmitting}
+                  {/* <AlwaysVisibleButton type="submit" loading={isSubmitting}
               styles={{
                 root: {
                   opacity: 1,
@@ -208,7 +259,22 @@ export function JobForm() {
             
             >
               Publish »
-            </AlwaysVisibleButton>
+            </AlwaysVisibleButton> */}
+            {/* <Button type="submit">Publish Test</Button> */}
+<AlwaysVisibleButton
+  loading={isSubmitting}
+  styles={{
+    root: {
+      opacity: 1,
+      transition: 'none',
+      backgroundColor: '#00AAFF',
+      color: '#fff',
+    },
+  }}
+>
+  Publish »
+</AlwaysVisibleButton>
+
           </Group>
         </Stack>
       </form>

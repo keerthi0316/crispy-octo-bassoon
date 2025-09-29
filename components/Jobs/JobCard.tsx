@@ -42,7 +42,7 @@ export function JobCard({ job, onApply }: JobCardProps) {
     <Card
       shadow="sm"
       radius="md"
-      p="lg"
+      p="md"
       style={{
         height: '100%',
         display: 'flex',
@@ -51,26 +51,31 @@ export function JobCard({ job, onApply }: JobCardProps) {
       }}
     >
       {/* Top Row: Company Logo + Posted Time */}
-      <Group justify="space-between" mb="sm">
-        <Avatar src={job.companyLogo} size="lg" radius="xl" />
-        <Badge color="blue" variant="light">
-          {formatTimeAgo(job.createdAt)}
+      <Group justify="space-between" mb="xs">
+        <Avatar src={job.companyLogo} size="md" radius="xl" />
+        <Badge   color="blue"
+  variant="light"
+  radius="xl"
+  size="sm"
+  style={{ alignSelf: 'flex-end', marginBottom: '0.5rem' }}
+>
+  24h Ago
         </Badge>
       </Group>
 
       {/* Job Title */}
-      <Text fw={600} size="lg" mb="xs">
+      <Text fw={600} size="md" mb={4}>
         {job.title}
       </Text>
 
       {/* Experience, Location, Salary */}
-      <Group gap="xs" mb="sm">
-        <IconUserPlus size={14} stroke={1.5} color="#666" />
-        <Text size="sm" c="dimmed">{job.experience}</Text>
-        <IconBuildings size={14} color="#666" />
-        <Text size="sm" c="dimmed">{job.location}</Text>
-        <IconStack2 size={14} color="#666" />
-        <Text size="sm" c="dimmed">{job.salaryRange}</Text>
+      <Group gap={6} mb={6}>
+        <IconUserPlus size={12} stroke={1.5} color="#666"  />
+        <Text size="xs" c="dimmed">{job.experience}</Text>
+        <IconBuildings size={12} color="#666" />
+        <Text size="xs" c="dimmed">{job.location}</Text>
+        <IconStack2 size={12} color="#666" />
+        <Text size="xs" c="dimmed">{job.salaryRange}</Text>
       </Group>
 
       {/* Description */}
@@ -84,9 +89,10 @@ export function JobCard({ job, onApply }: JobCardProps) {
         }
         mb="sm"
       >
-      <Text size="sm" c="dimmed" mb="sm" lineClamp={3}>
-        {job.description}
-      </Text>
+      <Text size="xs" c="dimmed" mb={8} >
+  • A user-friendly interface lets you browse stunning photos and videos <br />
+  • Filter destinations based on interests and travel style <br />
+</Text>
       </List>
 
       {/* Apply Button */}
@@ -99,15 +105,11 @@ export function JobCard({ job, onApply }: JobCardProps) {
         Apply Now
       </Button> */}
       <AlwaysVisibleButton
-  styles={{
-    root: {
-      opacity: 1,
-      transition: 'none',
-      backgroundColor: '#00AAFF', // your primary bg
-      color: '#fff',
-    },
-  }}
-
+  fullWidth
+  
+  radius="md"
+  size="sm"
+  style={{ backgroundColor: '#007BFF', color: '#fff'}}
         onClick={() => onApply(job.id)}
 >
   Apply Now
