@@ -10,9 +10,12 @@ export const jobSchema = z.object({
   description: z.string().min(10).max(2000),
   requirements: z.string().min(10).max(1000),
   responsibilities: z.string().min(10).max(1000),
-  applicationDeadline: z.date().refine(date => date > new Date(), {
-    message: 'Application deadline must be in the future'
-  })
+  applicationDeadline: z.preprocess(
+    (val) => (typeof val === 'string' ? new Date(val) : val),
+    z.date().refine((date) => date > new Date(), {
+      message: 'Application deadline must be in the future',
+    })
+  )
 })
 
 export type JobFormData = z.infer<typeof jobSchema>

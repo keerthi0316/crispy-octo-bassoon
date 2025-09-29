@@ -18,7 +18,7 @@ export interface Job {
 export const staticJobs: Job[] = [
   {
     id: '1',
-    title: 'Senior Frontend Developer',
+    title: 'Full Stack Developer',
     companyLogo:"https://1000logos.net/wp-content/uploads/2016/10/Amazon-logo-meaning.jpg",
     companyName: 'TechCorp Inc.',
     location: 'Onsite',
@@ -34,7 +34,7 @@ export const staticJobs: Job[] = [
   },
   {
     id: '2',
-    title: 'Full Stack Engineer',
+    title: 'Node Js Developer',
     companyName: 'StartupXYZ',
     companyLogo: "https://1000logos.net/wp-content/uploads/2018/02/Logo-Tesla.jpg",
     location: 'Onsite',
@@ -66,7 +66,7 @@ export const staticJobs: Job[] = [
   },
   {
     id: '4',
-    title: 'Backend Developer',
+    title: 'Full Stack Developer',
     companyName: 'CloudTech Solutions',
     companyLogo:"https://1000logos.net/wp-content/uploads/2016/10/Amazon-logo-meaning.jpg",
     location: 'Onsite',
@@ -82,7 +82,7 @@ export const staticJobs: Job[] = [
   },
   {
     id: '5',
-    title: 'DevOps Engineer',
+    title: 'Node Js Developer',
     companyName: 'InfraTech Corp',
     companyLogo: "https://1000logos.net/wp-content/uploads/2018/02/Logo-Tesla.jpg",
     location: 'Onsite',
@@ -98,7 +98,7 @@ export const staticJobs: Job[] = [
   },
   {
     id: '6',
-    title: 'Product Manager',
+    title: 'UI/UX Designerr',
     companyName: 'Innovation Labs',
     companyLogo:"https://img-cdn.publive.online/fit-in/1200x675/afaqs/media/post_attachments/2464727cf8c9a2f1686ab5656f3a1fe612e88887985928ac19cd07d4144ea3ad.png",
     location: 'Onsite',
@@ -114,7 +114,7 @@ export const staticJobs: Job[] = [
   },
   {
     id: '7',
-    title: 'Data Scientist',
+    title: 'Full Stack Developer',
     companyName: 'Analytics Pro',
     companyLogo:"https://1000logos.net/wp-content/uploads/2016/10/Amazon-logo-meaning.jpg",
     location: 'Onsite',
@@ -130,7 +130,7 @@ export const staticJobs: Job[] = [
   },
   {
     id: '8',
-    title: 'Marketing Intern',
+    title: 'Node Js Developer',
     companyName: 'Growth Marketing Co',
     companyLogo: "https://1000logos.net/wp-content/uploads/2018/02/Logo-Tesla.jpg",
     location: 'Onsite',
@@ -146,7 +146,7 @@ export const staticJobs: Job[] = [
   },
   {
     id: '9',
-    title: 'QA Engineer',
+    title: 'UI/UX Designer',
     companyName: 'Quality First Tech',
     companyLogo:"https://img-cdn.publive.online/fit-in/1200x675/afaqs/media/post_attachments/2464727cf8c9a2f1686ab5656f3a1fe612e88887985928ac19cd07d4144ea3ad.png",
     location: 'Onsite',
